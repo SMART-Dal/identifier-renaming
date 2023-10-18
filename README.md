@@ -5,7 +5,6 @@ Generating higher quality identifier names by using context and following conven
 2.2-all and 2.2-iter are two techniques for finetuning the GraphCodeBert model on variable names <br>
 4.0 is used to create the dataset. Repositories are cloned and this code file iterates over all the files and preprocesses them for creation of dataset.<br>
 procTest.ipynb processes the text generated while evaluating the trained model and generates relevant graphs<br>
-metric.py is code for the variable name readability metric<br>
 class_eval.py is used to evaluate the performance of the classifer <br>
 identifier_scoring.py uses two non-fine-tuned models GraphCodeBERT and CodeBERT for the metric<br>
 stat_sampling.py evaluates the use of random sampling technique to predict number of mask tokens<br>
