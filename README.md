@@ -2,7 +2,7 @@
 Generating higher quality identifier names by using context and following conventions with RLHF <br>
 0.0 is used to generate the csv dataset from the .java files after 4.0 <br>
 1.0 is code for the classifier to predict the number of mask tokens to insert in for the variable name <br>
-2.2-all and 2.2-iter are two techniques for finetuning the GraphCodeBert model on variable names <br>
+2.2-all is used for finetuning the GraphCodeBert model on variable names <br>
 4.0 is used to create the dataset. Repositories are cloned and this code file iterates over all the files and preprocesses them for creation of dataset.<br>
 procTest.ipynb processes the text generated while evaluating the trained model and generates relevant graphs<br>
 class_eval.py is used to evaluate the performance of the classifer <br>
