@@ -10,3 +10,4 @@ identifier_scoring.py uses two non-fine-tuned models GraphCodeBERT and CodeBERT 
 stat_sampling.py evaluates the use of random sampling technique to predict number of mask tokens<br>
 model_eval.py is the code to evaluate the trained model<br>
 model_test.csv is the subset of data used to evaluate the model<br>
+test.csv is the dataset used for the evaluation of the readability metric and the fine-tuned model <br>
