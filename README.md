@@ -1,5 +1,5 @@
 # Identifier-Renaming
-Generating higher quality identifier names by using context and following conventions with RLHF <br>
+Generating higher quality identifier names by using context and following conventions <br>
 0.0 is used to generate the csv dataset from the .java files after 4.0 <br>
 1.0 is code for the classifier to predict the number of mask tokens to insert in for the variable name <br>
 2.2-all is used for finetuning the GraphCodeBert model on variable names <br>
