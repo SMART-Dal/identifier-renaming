@@ -11,3 +11,5 @@ stat_sampling.py evaluates the use of random sampling technique to predict numbe
 model_eval.py is the code to evaluate the trained model<br>
 model_test.csv is the subset of data used to evaluate the model<br>
 test.csv is the dataset used for the evaluation of the readability metric and the fine-tuned model <br>
+train_1.csv, train_2.csv, train_3.csv are the subdivisions of the training data <br>
+The full dataset can be accessed<a href="https://drive.google.com/file/d/1pz8Td857p3CiglfXMVNhGpJB75IqQYwr/view?usp=sharing"> here</a>  <br>
