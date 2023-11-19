@@ -13,3 +13,9 @@ model_test.csv is the subset of data used to evaluate the model<br>
 test.csv is the dataset used for the evaluation of the readability metric and the fine-tuned model <br>
 train_1.csv, train_2.csv, train_3.csv are the subdivisions of the training data <br>
 The full dataset can be accessed<a href="https://drive.google.com/file/d/1pz8Td857p3CiglfXMVNhGpJB75IqQYwr/view?usp=sharing"> here</a>  <br>
+Steps for replication:<br>
+1. Install requirements.txt <br>
+2. To build the dataset, edit the repository details in 4.0.py and execute the code for the desired repositories.<br>
+3. Iterate over the saved files to generate the .csv file with 0.0.py<br>
+4. To train the model on the desired dataset, edit the dataset and name for the saved model in 2.2-all.py<br>
+5. The remaining code files have a multitude of uses detailed above<br>
