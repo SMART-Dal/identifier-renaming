@@ -17,5 +17,5 @@ Steps for replication:<br>
 1. Install requirements.txt <br>
 2. To build the dataset, edit the repository details in 4.0.py and execute the code for the desired repositories.<br>
 3. Iterate over the saved files to generate the .csv file with 0.0.py<br>
-4. To train the model on the desired dataset, edit the dataset and name for the saved model in 2.2-all.py<br>
+4. To train the model on the desired dataset, edit the dataset and name for the saved model in 2.2-all.py and execute the code<br>
 5. The remaining code files have a multitude of uses detailed above<br>
