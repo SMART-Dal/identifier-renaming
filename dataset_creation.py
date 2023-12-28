@@ -126,6 +126,7 @@ for file_name in file_names:
             print(file_name)
             a = file.read()
             if file_name.startswith("id"): 
+                a = a.rstrip("\n")
                 iden.append(a)
             else:
                 code.append(a)
