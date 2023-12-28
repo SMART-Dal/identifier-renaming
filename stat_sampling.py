@@ -70,6 +70,7 @@ class Step1_model(nn.Module):
 
     def forward(self, mapi):
         y = mapi[1]
+        y = y.rstrip("\n")
         print(y)
         nl = re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))|[a-z]+|\d+', y)
         lb = ' '.join(nl).lower()
