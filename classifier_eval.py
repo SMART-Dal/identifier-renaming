@@ -72,6 +72,7 @@ class Step1_model(nn.Module):
         X_init = mapi[0]
         X_init = X_init.replace("[MASK]", " ".join([tokenizer.mask_token] * 1))
         y = mapi[1]
+        y = y.rstrip("\n")
         print(y)
         nl = re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))|[a-z]+|\d+', y)
         lb = ' '.join(nl).lower()
