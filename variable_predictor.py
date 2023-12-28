@@ -63,6 +63,7 @@ class MyDataset(Dataset):
         for r in range(df.shape[0]):
             X_init = df['X'][r]
             y = df['y'][r]
+            y = y.rstrip("\n")
             n_y.append(y)
             nl = re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))|[a-z]+|\d+', y)
             lb = ' '.join(nl).lower()
