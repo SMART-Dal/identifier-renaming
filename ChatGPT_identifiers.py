@@ -44,12 +44,17 @@ X = df['X']
 
 response_list = []
 count = 0
+X = X[count:]
 for data in X:
     print(count, file=open('print_output.txt', 'a'))
-    data = data.strip()
-    response = call_gpt(data)
-    print(response, file=open('print_output.txt', 'a'))
-    response_list.append(response)
+    try:
+        data = data.strip()
+        response = call_gpt(data)
+        print(response, file=open('print_output.txt', 'a'))
+        response_list.append(response)
+    except:
+        print("NA", file=open('print_output.txt', 'a'))
+        response_list.append("NA")
     time.sleep(10)
     count+=1
 
