@@ -24,11 +24,11 @@ def call_gpt(prompt):
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": "I have very long Java classes with all instances of one variable in the code replaced with [MASK]. I want you to predict what the ideal variable name should be that replaces [MASK]. I will provide the code from the next prompt. Output the variable name and nothing else"},
-            {"role": "assistant", "content": "Sure, I'd be happy to help! Please provide the relevant code, and I'll do my best to suggest an appropriate variable name to replace [MASK]"},
+            {"role": "assistant", "content": "Please provide the relevant code, and I'll do my best to suggest an appropriate variable name to replace [MASK]"},
             {"role": "user", "content": prompt}
         ],
         temperature = 0.2,
-        max_tokens=200
+        max_tokens=300
     )
     return response.choices[0].message.content
 
@@ -43,7 +43,7 @@ X = df['X']
 
 
 response_list = []
-count = 0
+count = 0 #edit count value
 X = X[count:]
 for data in X:
     print(count, file=open('print_output.txt', 'a'))
@@ -53,6 +53,7 @@ for data in X:
         print(response, file=open('print_output.txt', 'a'))
         response_list.append(response)
     except:
+        print("except hit")
         print("NA", file=open('print_output.txt', 'a'))
         response_list.append("NA")
     time.sleep(10)
