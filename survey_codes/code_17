@@ -1,0 +1,136 @@
+package org.apache.dubbo.rpc.model;
+
+
+import org.apache.dubbo.common.utils.ClassUtils;
+
+import org.apache.dubbo.rpc.support.DemoService;
+
+import org.apache.dubbo.rpc.support.DemoServiceImpl;
+
+
+import org.junit.jupiter.api.AfterEach;
+
+import org.junit.jupiter.api.Assertions;
+
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.Test;
+
+
+import java.util.Collection;
+
+import java.util.List;
+
+import java.util.Set;
+
+
+/**
+
+* {@link ServiceRepository}
+
+*/
+
+class ServiceRepositoryTest {
+
+private FrameworkModel frameworkModel;
+
+private ApplicationModel applicationModel;
+
+private ModuleModel moduleModel;
+
+
+@BeforeEach
+
+public void setUp() {
+
+frameworkModel = new FrameworkModel();
+
+applicationModel = frameworkModel.newApplication();
+
+moduleModel = applicationModel.newModule();
+
+}
+
+
+@AfterEach
+
+public void reset() {
+
+frameworkModel.destroy();
+
+}
+
+
+@Test
+
+void test() {
+
+// verify BuiltinService
+
+Set<BuiltinServiceDetector> [MASK]
+
+= applicationModel.getExtensionLoader(BuiltinServiceDetector.class).getSupportedExtensionInstances();
+
+ModuleServiceRepository moduleServiceRepository = applicationModel.getInternalModule().getServiceRepository();
+
+List<ServiceDescriptor> allServices = moduleServiceRepository.getAllServices();
+
+Assertions.assertEquals(allServices.size(), [MASK] .size());
+
+
+ModuleServiceRepository repository = moduleModel.getServiceRepository();
+
+ServiceMetadata serviceMetadata = new ServiceMetadata(DemoService.class.getName(), null, null, DemoService.class);
+
+ServiceDescriptor serviceDescriptor = repository.registerService(DemoService.class);
+
+
+// registerConsumer
+
+ConsumerModel consumerModel = new ConsumerModel(
+
+serviceMetadata.getServiceKey(), new DemoServiceImpl(), serviceDescriptor,
+
+moduleModel, serviceMetadata, null, ClassUtils.getClassLoader(DemoService.class));
+
+repository.registerConsumer(consumerModel);
+
+
+// registerProvider
+
+ProviderModel providerModel = new ProviderModel(DemoService.class.getName(),
+
+new DemoServiceImpl(),
+
+serviceDescriptor,
+
+moduleModel,
+
+serviceMetadata, ClassUtils.getClassLoader(DemoService.class));
+
+repository.registerProvider(providerModel);
+
+
+// verify allProviderModels, allConsumerModels
+
+ServiceRepository serviceRepository = applicationModel.getApplicationServiceRepository();
+
+Collection<ProviderModel> providerModels = serviceRepository.allProviderModels();
+
+Assertions.assertEquals(providerModels.size(), 1);
+
+Assertions.assertTrue(providerModels.contains(providerModel));
+
+
+Collection<ConsumerModel> consumerModels = serviceRepository.allConsumerModels();
+
+Assertions.assertEquals(consumerModels.size(), 1);
+
+Assertions.assertTrue(consumerModels.contains(consumerModel));
+
+
+}
+
+
+}
+

@@ -1,0 +1,44 @@
+package com.google.devtools.build.skyframe;
+
+
+import com.google.common.collect.ImmutableList;
+
+
+/** A simple {@link Differencer} that is manually informed of invalid/injected nodes. */
+
+public interface RecordingDifferencer extends Differencer, Injectable {
+
+@Override
+
+Diff getDiff(WalkableGraph [MASK] , Version fromVersion, Version toVersion);
+
+
+/** Stores the given values for invalidation. */
+
+void invalidate(Iterable<SkyKey> values);
+
+
+/**
+
+* Invalidates the cached values of any values in error transiently.
+
+*
+
+* <p>If a future call to {@link MemoizingEvaluator#evaluate} requests a value that transitively
+
+* depends on any value that was in an error state (or is one of these), they will be re-computed.
+
+*/
+
+default void invalidateTransientErrors() {
+
+// All transient error values have a dependency on the single global ERROR_TRANSIENCE value,
+
+// so we only have to invalidate that one value to catch everything.
+
+invalidate(ImmutableList.of(ErrorTransienceValue.KEY));
+
+}
+
+}
+
