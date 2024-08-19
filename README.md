@@ -78,7 +78,7 @@ python3 data/dataset_creation.py \
 --output_dir ./data
 ```
 
-Note that the value of `raw_data_path` should be the same as `output_dir` from the previous step. Upon successful executing, two files named `train.csv` and `test.csv` will be saved in the directory specified in `output_dir`.  
+Note that the value of `raw_data_path` should be the same as `output_dir` from the previous step. Upon successful exceution, two files named `train.csv` and `test.csv` will be saved in the directory specified in `output_dir`.  
 
 We included the training and test samples that we have used in our study, i.e. the ones sampled from the full dataset. The training samples are divided into 3 CSV files in `data/training` given Github's size restriction. To combine them into one file called `train.csv` you can use the following Unix command,
 ```bash
