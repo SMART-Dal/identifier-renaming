@@ -264,7 +264,7 @@ for epoch in range(EPOCHS):
                 'optimizer_state_dict': optimizer.state_dict(),
                 'cntr': cntr  # Add any additional information you want>
             }
-            model_path = 'var_runs/model_{}_{}_{}.pth'.format(run_>
+            model_path = 'var_runs/model_{}_{}_{}.pth'.format(run_int, epoch,cntr)
             torch.save(checkpoint, model_path)
                                                               
      # optionally propagating losses in batches
