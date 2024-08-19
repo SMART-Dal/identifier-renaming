@@ -1,24 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[8]:
 
 
 from openai import OpenAI
 import pandas as pd
-import time
+import time, os
+import argparse
 
 
-# In[2]:
 
-
-client = OpenAI(api_key = "") #insert API key
-
-
-# In[ ]:
-
-
-def call_gpt(prompt):
+def call_gpt(prompt, client):
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -32,39 +24,36 @@ def call_gpt(prompt):
     )
     return response.choices[0].message.content
 
-# In[6]:
+def run_gpt(test_csv_file, api_key):
+    client = OpenAI(api_key = api_key)
+    df = pd.read_csv(test_csv_file)
+    X = df['X']
+    response_list = []
+    count = 0 #edit count value
+    X = X[count:]
+    for data in X:
+        print(count, file=open('print_output.txt', 'a'))
+        try:
+            data = data.strip()
+            response = call_gpt(data, client)
+            print(response, file=open('print_output.txt', 'a'))
+            response_list.append(response)
+        except:
+            print("except hit")
+            print("NA", file=open('print_output.txt', 'a'))
+            response_list.append("NA")
+        time.sleep(10)
+        count+=1
+
+    file_path = "generations.txt"
+    with open(file_path, 'w') as file:
+        for sentence in response_list:
+            file.write(sentence + '\n')
 
 
-df = pd.read_csv('pe.csv')
-X = df['X']
-
-
-# In[7]:
-
-
-response_list = []
-count = 0 #edit count value
-X = X[count:]
-for data in X:
-    print(count, file=open('print_output.txt', 'a'))
-    try:
-        data = data.strip()
-        response = call_gpt(data)
-        print(response, file=open('print_output.txt', 'a'))
-        response_list.append(response)
-    except:
-        print("except hit")
-        print("NA", file=open('print_output.txt', 'a'))
-        response_list.append("NA")
-    time.sleep(10)
-    count+=1
-
-
-# In[ ]:
-
-
-file_path = "generations.txt"
-with open(file_path, 'w') as file:
-    for sentence in response_list:
-        file.write(sentence + '\n')
-
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test_csv_file", type=str, help="Path to the test csv file")
+    parser.add_argument("--api_key", type=str, help="OpenAI API key")
+    args = parser.parse_args()
+    run_gpt(args.test_csv_file, args.api_key)
