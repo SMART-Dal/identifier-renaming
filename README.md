@@ -21,6 +21,6 @@ identifier code snippets is required).
 2. In a similar manner to `classifier_eval.py`, `stat_sampling.py` evaluates the random sampling technique to predict the number of mask tokens required for a variable name. Using the generated dataset, the probabilities for random sampling are already hard-coded. Only the test dataset path needs to be modified. 
 3. `model_eval.py` contains similar code as `variable_predictor.py` but here, the losses are calculated for both the trained model and the base model. The % difference, and the PLL values for both the base and trained model are printed for each code snippet in the test dataset. In an additional step, the ground truth variable name is replaced with a random variable name. The losses are evaluated for this name as well. This is the mock variable name as described in detail in the paper. The output is the losses in the text printed to the nohup file. 
 4. Modify the path to where the nohup file is stored and `procTest.ipynb` (or `procTest.py`) uses that text to extract the losses and create a `.csv` file. Using this, it generates the graphs used to evaluate identifier names and the fine-tuned model in the paper. 
-5. `model_test.csv` is the subset of data used to evaluate the model 
+5. `test.csv` is the subset of data used to evaluate the model 
 6. `train_1.csv`, `train_2.csv`, `train_3.csv` are the subdivisions of the training data 
 
