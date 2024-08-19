@@ -38,7 +38,9 @@ Researchers in the field may use and build upon the proposed approach for variab
 5. `figures`: Contains figures that are displayed in the README.
 
 
-### Enviornment Setup
+### Enviornment Setup and Requirements
+
+To run the scripts in this replication package, you need a machine with a Python version of `3.10` or above. The experiments were run on a machine equiped with an AMD Rome 7532 64-core CPU, 490 GB of CPU memory and an Nvidia V100. Please note that a machine with much less resources (e.g. with a 16GB of RAM, and consumer grade GPU such as `RTX3090`) should be enough.
 
 First, create a new Python virtual enviornment and install the required dependencies,
 ```bash
