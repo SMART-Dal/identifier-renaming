@@ -1,5 +1,7 @@
 # Enhancing Identifier Naming Through Multi-Mask Fine-tuning of Language Models of Code
 
+Accepted at: 24th IEEE International Conference on Source Code Analysis and Manipulation.
+
 ## Abstract
 
 > Code readability strongly influences code comprehension and, to some degree, code quality. Unreadable code makes software maintenance more challenging and is prone to more bugs.
