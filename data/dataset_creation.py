@@ -1,20 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
 
 
-from javalang import tree, parser
+
 import pandas as pd
-import numpy
 import javalang
 from collections import defaultdict
 import re
-import shutil
 import os
-
-
-# In[2]:
+import argparse
 
 
 # extracting identifier sorted in desceding order of their frequency
@@ -36,7 +31,7 @@ def parse_identifiers(code):
     return sorted_identifiers
 
 
-# In[3]:
+
 
 
 # extract the top "n" identifiers from the list of identifier tuples
@@ -58,7 +53,7 @@ def find_top_identifiers(identifiers):
     return top_identifiers
 
 
-# In[4]:
+
 
 
 # takes code snippets and replaces them with masks
@@ -73,76 +68,92 @@ def replace_identifier_with_mask(java_code, output_file_path, identifier, identi
         identifier_output_file.write(f"{identifier}\n")
 
 
-# In[6]:
 
 
-# input folder contains .java files cloned from Github repositories
-input_path = 'Dataset/inp-txt/'  # Replace with the actual folder path
-folder_path = input_path
-r = 0
-for file_name in os.listdir(folder_path):
-    print(r)
-    try:
-        file_path = os.path.join(folder_path, file_name)
-        with open(file_path, 'r') as file:
-            java_code = file.read()
-        identifiers = parse_identifiers(java_code)
-    except:
-        identifiers = []
-    top_identifiers = find_top_identifiers(identifiers)
-    # Print top identifiers for each file
-    print(f"File: {file_name}")
-    if r < 5:
-        for identifier, count in top_identifiers:
-            print(identifier, "-", count)
+def generate_dataset(input_path, temp_folder):
+    # input folder contains .java files cloned from Github repositories
+     # Replace with the actual folder path
+    folder_path = input_path
+    r = 0
+    for file_name in os.listdir(folder_path):
+        print(r)
+        try:
+            file_path = os.path.join(folder_path, file_name)
+            with open(file_path, 'r') as file:
+                java_code = file.read()
+            identifiers = parse_identifiers(java_code)
+        except:
+            identifiers = []
+        top_identifiers = find_top_identifiers(identifiers)
+        # Print top identifiers for each file
+        print(f"File: {file_name}")
+        if r < 5:
+            for identifier, count in top_identifiers:
+                print(identifier, "-", count)
 
-    # Modify files and save them with the identifier names
-    # Modified file path stores new java snippets with masked identifiers as .txt files
-    # r (for the original java file) and i (to distinguish identifiers from same java file)
-    # are used for indexing
-    if len(top_identifiers) != 0:
-        for i, (identifier, count) in enumerate(top_identifiers, start=1):
-            # stores the masked code snippet
-            modified_file_path = f"Dataset/op-txt/{r}_{i}.txt"
-            # stores the masked identifier in a different file
-            id_path = f"Dataset/op-txt/id_{r}_{i}.txt"
-            # Replace identifier in the new file
-            replace_identifier_with_mask(java_code, modified_file_path, identifier, id_path)
-        r+=1
-
-
-# In[7]:
+        # Modify files and save them with the identifier names
+        # Modified file path stores new java snippets with masked identifiers as .txt files
+        # r (for the original java file) and i (to distinguish identifiers from same java file)
+        # are used for indexing
+        if len(top_identifiers) != 0:
+            for i, (identifier, count) in enumerate(top_identifiers, start=1):
+                # stores the masked code snippet
+                modified_file_path = os.path.join(temp_folder, f"{r}_{i}.txt")
+                # stores the masked identifier in a different file
+                id_path = os.path.join(temp_folder, f"id_{r}_{i}.txt")
+                # Replace identifier in the new file
+                replace_identifier_with_mask(java_code, modified_file_path, identifier, id_path)
+            r+=1
 
 
-#iterates over the masked code snippets and their respective identifers to create a .csv file
-code = []
-iden = []
-folder_path = 'Dataset/op-txt/' 
-file_names = sorted(os.listdir(folder_path))
-for file_name in file_names:
-    if file_name.endswith(".txt"): 
-        file_path = os.path.join(folder_path, file_name)
-        with open(file_path, 'r') as file:
-            print(file_name)
-            a = file.read()
-            if file_name.startswith("id"): 
-                a = a.rstrip("\n")
-                iden.append(a)
-            else:
-                code.append(a)
-df = pd.DataFrame({'code': code, 'identifier': iden})
 
 
-# In[8]:
+def _generate_csv(output_dir, temp_folder):
+    #iterates over the masked code snippets and their respective identifers to create a .csv file
+    code = []
+    iden = []
+    folder_path = temp_folder
+    file_names = sorted(os.listdir(folder_path))
+    for file_name in file_names:
+        if file_name.endswith(".txt"): 
+            file_path = os.path.join(folder_path, file_name)
+            with open(file_path, 'r') as file:
+                print(file_name)
+                a = file.read()
+                if file_name.startswith("id"): 
+                    a = a.rstrip("\n")
+                    iden.append(a)
+                else:
+                    code.append(a)
+    df = pd.DataFrame({'X': code, 'y': iden})
+    training_subset = df[:5000].sample(n=1000).reset_index(drop=True)
+    test_subset = df[-1000:].sample(n=100).reset_index(drop=True)
+    train_output_path = os.path.join(output_dir,'train.csv')
+    test_output_path = os.path.join(output_dir, 'test.csv')
+    training_subset.to_csv(train_output_path, header=None)
+    test_subset.to_csv(test_output_path, header=None)
 
 
-# new_df = pd.read_csv('dat.csv')
-# concatenated_df = pd.concat([df, new_df])
-df.to_csv('dat.csv',index=False)
 
 
-# In[ ]:
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Convert raw data into a single CSV file which will be used for training and testing.")
+    parser.add_argument("--raw_data_path", help="Path to directory containing Java files")
+    parser.add_argument("--output_dir", help="Directory to save the CSV files")
+    return parser.parse_args()
 
+def main():
+    # Parse command-line arguments
+    args = parse_arguments()
+    temp_folder = os.path.join(os.getcwd(), 'tmp')
+    os.makedirs(temp_folder, exist_ok=True)
+    generate_dataset(args.raw_data_path, temp_folder)
+    _generate_csv(args.output_dir, temp_folder)
+    
+    
+
+if __name__ == "__main__":
+    main()
 
 
