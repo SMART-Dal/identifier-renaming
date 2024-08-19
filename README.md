@@ -2,6 +2,8 @@
 
 Accepted at: 24th IEEE International Conference on Source Code Analysis and Manipulation.
 
+![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.13345157.svg)
+
 ## Abstract
 
 > Code readability strongly influences code comprehension and, to some degree, code quality. Unreadable code makes software maintenance more challenging and is prone to more bugs.
