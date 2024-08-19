@@ -1,15 +1,19 @@
 # Identifier-Renaming
-Generating higher quality identifier names by using context and following conventions
+This repository represents a replication package for our paper "Enhancing Identifier Naming Through Multi-Mask Fine-tuning of Language Models of Code", accepted in IEEE SCAM 2024. The paper presents a method to generate high quality source code identifiers by using source code context.
 
 ### Step 1: Dataset creation
 
-1. Clone Github repositories and store all `.java` files in one folder 
+You may skip this step and directly use our dataset that can be found [here](https://drive.google.com/file/d/1pz8Td857p3CiglfXMVNhGpJB75IqQYwr/view?usp=sharing). To generate the dataset from scratch, please follow the steps mentioned below.
 
-2. Use `dataset_creation.py` to get the resulting `.csv` file. Paths for input folder need to be 
+1. Identify a set of Github repositories that you would like to use for training the model.
+
+2. Clone all the repositories and store all `.java` files in one folder say `java_files`. @TODO: Are we using any scripts for this step?
+
+3. Use `dataset_creation.py` to get the resulting `.csv` file, say `dataset.csv`. Paths for input folder need to be 
 modified before execution (with original code snippets, and output path for masked
-identifier code snippets is required).
+identifier code snippets is required). @TODO: add command to execute. @TODO: add (examples of) changes that a user must make before running the script.
 
-3. The `.csv` file is used for training. Current dataset is present [here](https://drive.google.com/file/d/1pz8Td857p3CiglfXMVNhGpJB75IqQYwr/view?usp=sharing).
+4. The `dataset.csv` file is used for training.
  
 ### Step 2: Training 
 
