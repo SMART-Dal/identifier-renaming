@@ -111,12 +111,12 @@ python3 evaluation/model_eval.py \
 --checkpoint training/var_runs/<CHECKPOINT-NAME>
 ```
 
-We also provide the model checkpoint hosted on [Huggingface](https://huggingface.co/spaces/anon903/ReIdentify/tree/main?clone=true). To clone the repository, make sure to have `git lfs` installed on your machine. You can do so by following the official [documentation](https://git-lfs.com/).
+We also provide the model checkpoint hosted on [Huggingface](https://huggingface.co/spaces/scam2024/ReIdentify/tree/main?clone=true). To clone the repository, make sure to have `git lfs` installed on your machine. You can do so by following the official [documentation](https://git-lfs.com/).
 Once `git lfs` is properly installed, executing these commands,
 
 ```bash
 git lfs install
-git clone https://huggingface.co/spaces/anon903/ReIdentify
+git clone https://huggingface.co/spaces/scam2024/ReIdentify
 ```
 
 The checkpoint name is `model_26_2` and the evaluation can be executed as follow,
