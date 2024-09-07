@@ -118,7 +118,7 @@ def test(checkpoint, testing_csv_file):
     model.load_state_dict(torch.load(checkpoint))
     model.eval()
     base_model.eval()
-    myDs=MyDataset(testing_csv_file) 
+    myDs=MyDataset(testing_csv_file,tokenizer) 
     train_loader=DataLoader(myDs,batch_size=1,shuffle=False)
 
 
