@@ -111,13 +111,15 @@ class MyDataset(Dataset):
         return self.inp_dicts[idx]
 
 
-def test(checkpoint, testing_csv_file):
+def test(checkpoint, testing_csv_file, device = 'cpu'):
     tokenizer = AutoTokenizer.from_pretrained("microsoft/graphcodebert-base")
     model = AutoModelForMaskedLM.from_pretrained("microsoft/graphcodebert-base")
     base_model = AutoModelForMaskedLM.from_pretrained("microsoft/graphcodebert-base")
     model.load_state_dict(torch.load(checkpoint))
     model.eval()
     base_model.eval()
+    base_model.to(device)
+    model.to(device)
     myDs=MyDataset(testing_csv_file,tokenizer) 
     train_loader=DataLoader(myDs,batch_size=1,shuffle=False)
 
@@ -169,7 +171,7 @@ def test(checkpoint, testing_csv_file):
             m_y = random.choice(var_list[num_sub_tokens_label-1])
             m_ty = tokenizer.encode(m_y)[1:-1]
             print("Mock truth:", m_y)
-    #            input_ids, att_mask = input_ids.to(device),att_mask.to(device)
+            input_ids, att_mask = input_ids.to(device),att_mask.to(device)
             outputs = model(input_ids, attention_mask = att_mask)
             base_outputs = base_model(input_ids, attention_mask = att_mask)
             last_hidden_state = outputs[0].squeeze()
@@ -270,6 +272,7 @@ def test(checkpoint, testing_csv_file):
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Testing the language model that was trained for identifier renaming.")
     parser.add_argument("--testing_csv_file", help="Path to CSV file containing testing data")
+    parser.add_argument("--device", help="Device to train the model on (default: cpu)", choices=["cuda", "cpu"] , default="cpu")
     parser.add_argument("--checkpoint", help="Model checkpoint")
     return parser.parse_args()
 
@@ -278,7 +281,14 @@ def main():
     args = parse_arguments()
     testing_csv_file = args.testing_csv_file
     checkpoint = args.checkpoint
-    test(checkpoint, testing_csv_file)
+    device = args.device
+    if device == "cuda" and not torch.cuda.is_available():
+        print("CUDA is not available on this device. Using CPU instead.")
+        device = "cpu"
+    else:
+        print(f"Using {device} for training.")
+        device = torch.device(device)
+    test(checkpoint, testing_csv_file, device)
     
     
 
