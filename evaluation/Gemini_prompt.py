@@ -1,11 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
-
-
-#!/usr/bin/env python
-# coding: utf-8
 
 import google.generativeai as genai
 import pandas as pd
@@ -58,10 +50,6 @@ if __name__ == "__main__":
     parser.add_argument("--api_key", type=str, help="Google API key")
     args = parser.parse_args()
     run_gemini(args.test_csv_file, args.api_key)
-
-
-# In[ ]:
-
 
 
 
