@@ -5,4 +5,5 @@ javalang
 numpy
 pandas
 openai
+google-generativeai
 requests
