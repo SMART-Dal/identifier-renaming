@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 
 from torch.nn.utils import clip_grad_norm_
 import pandas as pd
@@ -18,6 +15,7 @@ from tqdm import tqdm
 from transformers import AutoModelForMaskedLM
 import torch.nn.functional as F
 import argparse
+from tqdm import tqdm
 
 
 
@@ -57,7 +55,9 @@ class MyDataset(Dataset):
         df = pd.read_csv(file_name)
         df = df.fillna("")
         self.inp_dicts = []
-        for r in range(df.shape[0]):
+        pbar = tqdm(range(df.shape[0]))
+        print("Preprocessing training data")
+        for r in pbar:
             X_init = df['X'][r]
             y = df['y'][r]
             y = y.rstrip("\n")
@@ -163,8 +163,8 @@ def train(csv_file, device = "cpu"):
     #model = nn.DataParallel(model,device_ids=[0,1])
     #model.to(device)
 
-
-    for epoch in range(EPOCHS):
+    pbar = tqdm(range(EPOCHS))
+    for epoch in pbar:
         loop = tqdm(train_loader, leave=True)
         tot_loss = 0.0
         cntr = 0
