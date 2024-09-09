@@ -141,7 +141,7 @@ class MyDataset(Dataset):
         return self.inp_dicts[idx]
 
 
-def train(csv_file):
+def train(csv_file, device = "cpu"):
 
     # various configurations such as freezing layers, using half precision, using GPU, etc.
 
@@ -151,6 +151,7 @@ def train(csv_file):
     run_int = 26
     tokenizer = AutoTokenizer.from_pretrained("microsoft/graphcodebert-base")
     model = AutoModelForMaskedLM.from_pretrained("microsoft/graphcodebert-base")
+    model = model.to(device)
     #model = model.half()
     #model = freeze(model)
     optimizer = Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=2e-5)
@@ -181,7 +182,7 @@ def train(csv_file):
                 print("Ground truth:", y)
                 ty = tokenizer.encode(y)[1:-1]
                 num_sub_tokens_label = len(ty)
-    #            input_ids, att_mask = input_ids.to(device),att_mask.to(device)
+                input_ids, att_mask = input_ids.to(device),att_mask.to(device)
                 outputs = model(input_ids, attention_mask = att_mask)
                 last_hidden_state = outputs[0].squeeze()
                 # averaging the predictions from each masked hidden state within each block
@@ -289,13 +290,21 @@ def train(csv_file):
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Train a language model for identifier renaming.")
     parser.add_argument("--training_csv_file", help="Path to CSV file containing training data")
+    parser.add_argument("--device", help="Device to train the model on (default: cpu)", choices=["cuda", "cpu"] , default="cpu")
     return parser.parse_args()
 
 def main():
     # Parse command-line arguments
     args = parse_arguments()
     training_csv_file = args.training_csv_file
-    train(training_csv_file)
+    device = args.device
+    if device == "cuda" and not torch.cuda.is_available():
+        print("CUDA is not available on this device. Using CPU instead.")
+        device = "cpu"
+    else:
+        print(f"Using {device} for training.")
+        device = torch.device(device)
+    train(training_csv_file, device)
     
     
 
