@@ -98,8 +98,10 @@ As for the test samples, they can be found in `data/testing/test.csv`
 
 ```bash
 python3 training/variable_predictor.py \
---training_csv_file data/training/train.csv
+--training_csv_file data/training/train.csv \
+--device <DEVICE>
 ```
+If your machine has an NVIDIA GPU, set the `device` argument to `cuda`. If not specified, the default device will be `cpu`.
 
 Where `training_csv_file` is the CSV file containg the training samples that was generated in Part 1.2. Alternatively, you could use the file that we have provided in the same section. The model's checkpoints will be saved in `training/var_runs`.
  
@@ -107,9 +109,11 @@ Where `training_csv_file` is the CSV file containg the training samples that was
 1. Model evaluation is done through the `evaluation/model_eval.py`,
 ```bash
 python3 evaluation/model_eval.py \
---testing_csv_file data/testing/test.csv
+--testing_csv_file data/testing/test.csv \
 --checkpoint training/var_runs/<CHECKPOINT-NAME>
+--device <DEVICE>
 ```
+Make sure to set `device` to `cuda` to run inference/evaluation on the GPU.  
 
 We also provide the model checkpoint hosted on [Huggingface](https://huggingface.co/spaces/scam2024/ReIdentify/tree/main?clone=true). To clone the repository, make sure to have `git lfs` installed on your machine. You can do so by following the official [documentation](https://git-lfs.com/).
 Once `git lfs` is properly installed, executing these commands,
@@ -122,16 +126,24 @@ git clone https://huggingface.co/spaces/scam2024/ReIdentify
 The checkpoint name is `model_26_2` and the evaluation can be executed as follow,
 ```bash
 python3 evaluation/model_eval.py \
---testing_csv_file data/testing/test.csv
+--testing_csv_file data/testing/test.csv \
 --checkpoint ReIdentify/model_26_2
 ```
 
-2. GPT4 evaluation: In the paper, we have run experiments to compare our model's performance in generating identifier names compared to GPT4 on the same test set mentioned in previous sections.  
-Specifically, we used OpenAI's API service, hence, you will need an [OpenAI API key](https://platform.openai.com/docs/api-reference/authentication).
+2. GPT4 and Gemini Pro evaluation: In the paper, we have run experiments to compare our model's performance in generating identifier names compared to larger models, namely GPT4 and Gemini Pro, on the same test set mentioned in previous sections.  
+Specifically, we used OpenAI's API service, hence, you will need an [OpenAI API key](https://platform.openai.com/docs/api-reference/authentication). Similarly, a Gemini API key is also required. It can be obtained through the following [link](https://ai.google.dev/gemini-api/docs/api-key).  
 
+To communicate with OpenAI's API,
 ```bash
-python3 evaluation/ChatGPT_identifiers \
---test_csv_file data/testing/test.csv
+python3 evaluation/ChatGPT_identifiers.py \
+--test_csv_file data/testing/test.csv \
+--api_key <API-KEY>
+```
+
+To communicate with Gemini Pro's API,
+```bash
+python3 evaluation/Gemini_prompt.py \
+--test_csv_file data/testing/test.csv \
 --api_key <API-KEY>
 ```
 
