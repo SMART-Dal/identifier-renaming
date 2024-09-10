@@ -2,7 +2,7 @@
 
 Accepted at: 24th IEEE International Conference on Source Code Analysis and Manipulation.
 
-![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.13345157.svg)
+[![DOI](https://zenodo.org/badge/686503467.svg)](https://zenodo.org/doi/10.5281/zenodo.13345156)
 
 ## Abstract
 
